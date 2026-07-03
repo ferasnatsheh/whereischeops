@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Version to be published on GitHub. 
+v0.0: whereischeops_v0.0.py computes CHEOPS position and orientation for a given UTC or JD timestamp, or for a time range.
 """
 import warnings
 import numpy as np
@@ -114,9 +114,9 @@ def load_data(data_dir: str, jd_start: float, jd_end: float) -> dict:
 
     Input:
         data_dir : str
-            Directory containing all CHEOPS data files.
+            Directory containing all CHEOPS data files
         jd_start, jd_end : float
-            Query interval in Julian Date.
+            Query interval in Julian Date
 
     Returns:
         dict with keys:
