@@ -339,8 +339,9 @@ def _jitter_intervals_dt(jd_arr, val_arr):
 
     intervals, i0 = [], 0
     for i in range(1, len(spike_jd)):
-        intervals.append((spike_dt[i0], spike_dt[i - 1]))
-        i0 = i
+        if (spike_jd[i] - spike_jd[i - 1]) * 86400 > 10: 
+            intervals.append((spike_dt[i0], spike_dt[i - 1]))
+            i0 = i
     intervals.append((spike_dt[i0], spike_dt[-1]))
     return intervals
 
@@ -487,7 +488,7 @@ def plot_sun_with_jitter(t_array, angles_for_target, jitter):
     ax_top.set_ylabel("Angle to Sun [deg]")
     ax_top.grid(True, alpha=0.3)
 
-    spike_patch = Patch(color='red', alpha=0.4,
+    spike_patch = Patch(color='red', alpha=0.5,
                         label=f'Pointing error > {JITTER_THRESHOLD_ARCSEC}"')
     ax_top.legend(loc='upper right', fontsize=8, ncol=2,
                   handles=list(ax_top.lines) + [spike_patch])
@@ -498,6 +499,9 @@ def plot_sun_with_jitter(t_array, angles_for_target, jitter):
                 label='Pointing error')
     ax_bot.axhline(JITTER_THRESHOLD_ARCSEC, color='red', lw=1.5, ls='--',
                    label=f'{JITTER_THRESHOLD_ARCSEC}" threshold')
+    ax_bot.fill_between(jit_dt, jitter['val'], JITTER_THRESHOLD_ARCSEC,
+                        where=(jitter['val'] > JITTER_THRESHOLD_ARCSEC),
+                        color='red', alpha=0.5)
     ax_bot.set_ylabel('Pointing error ["]')
     ax_bot.legend(loc='upper right', fontsize=8)
     ax_bot.grid(True, alpha=0.3)
